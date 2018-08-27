@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
 class Main {
     private final static Scanner input = new Scanner(System.in);
-    private static int curNum;
+    private static int curDigit;
     private static char[][] curLCD;
     private static int numCols;
     private static int numRows;
@@ -14,7 +15,7 @@ class Main {
 
     private static boolean isNumContainedIn(int[] arr) {
         for (int num : arr) {
-            if (num == curNum) { return true; }
+            if (num == curDigit) { return true; }
         }
         return false;
     }
@@ -118,26 +119,26 @@ class Main {
     }
 
     public static void main(String[] args) {
-        char[][][] digits;
+        int s;
+        String n;
 
-        while (input.hasNextLine()) {
-            String[] line = input.nextLine().split(" ");
+        while (true) {
+            s = input.nextInt();
+            n = input.next();
+            if (s == 0 && n.equals("0")) {
+                return;
+            } else {
+                numRows = s * 2 + 3;
+                numCols = s + 2;
 
-            int digitSize = Integer.parseInt(line[0]);
+                char[][][] digits = new char[n.length()][numRows][numCols];
 
-            numRows = digitSize * 2 + 3;
-            numCols = digitSize + 2;
-
-            String number = line[1];
-            digits = new char[number.length()][numRows][numCols];
-
-            if (digitSize > 0) {
-                for (int i = 0; i < number.length(); i++) {
-                    curNum = Character.getNumericValue(number.charAt(i));
+                for(int d = 0; d < digits.length; d++) {
+                    curDigit = n.charAt(d) - '0';
                     curLCD = new char[numRows][numCols];
                     setDrawLimits();
                     drawFigure();
-                    digits[i] = curLCD;
+                    digits[d] = curLCD;
                 }
 
                 printDigits(digits);
