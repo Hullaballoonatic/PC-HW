@@ -2,33 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b606165-545b-4a2b-b38c-fd059faa168c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../706/.idea/description.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/dictionaries/Hulla.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/project-template.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/template-meta.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/root3/java/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../706/src/main/java/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../UVa Problem/src/main/java/Application.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -48,8 +24,10 @@
     <session id="1055650664">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -127,12 +105,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="e#233#234#0" expanded="true" />
-                <element signature="e#275#276#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="160">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
@@ -327,7 +301,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6140714070984" />
+        <entry key="$PROJECT_DIR$" value="6140791381708" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="2312197614" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
@@ -527,10 +501,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1096" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1859" />
+    <option name="height" value="1098" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -557,7 +531,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -587,8 +561,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -641,17 +615,18 @@
       <workItem from="1535214981441" duration="2408000" />
       <workItem from="1535229183629" duration="12756000" />
       <workItem from="1535315354640" duration="540000" />
+      <workItem from="1535380916109" duration="218000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22270000" />
+    <option name="totallyTimeSpent" value="22488000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="-7" width="1487" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24334398" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24667133" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -701,12 +676,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#233#234#0" expanded="true" />
-            <element signature="e#275#276#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="160">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
