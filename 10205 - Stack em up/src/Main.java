@@ -1,5 +1,4 @@
 import java.io.PrintStream;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -61,41 +60,35 @@ public class Main {
     };
 
     public static void main(String[] args) {
-        int numCases = in.nextInt();
         String line;
         byte[][] shuffles;
 
-        in.nextLine();
-        in.nextLine();
-
         String[] newOrder = new String[52];
         String[] curOrder = new String[52];
+        System.arraycopy(cards, 0, curOrder, 0, 52);
+
+        int numCases = in.nextInt();
 
         for (int test = 0; test < numCases; test++) {
-            byte numShuffles = Byte.parseByte(in.nextLine());
+            byte numShuffles = in.nextByte();
+
             shuffles = new byte[numShuffles][52];
+
             for(int shuffle = 0; shuffle < numShuffles; shuffle++) {
-                String[] tmp = in.nextLine().split(" ");
                 for (int card = 0; card < 52; card++) {
-                    shuffles[shuffle][card] = Byte.parseByte(tmp[card]);
+                    shuffles[shuffle][card] = in.nextByte();
                 }
             }
 
-            System.arraycopy(cards, 0, curOrder, 0, 52);
+            in.nextLine();
 
-            line = in.nextLine();
-            do {
+            while ((line = in.nextLine()) != null && !line.isEmpty()) {
                 int shuffleIndex = Integer.parseInt(line) - 1;
                 for (int newPosIndex = 0; newPosIndex < 52; newPosIndex++) {
                     newOrder[newPosIndex] = curOrder[shuffles[shuffleIndex][newPosIndex] - 1];
                 }
                 System.arraycopy(newOrder, 0, curOrder, 0, 52);
-                try {
-                    line = in.nextLine();
-                } catch (NoSuchElementException e) {
-                    break;
-                }
-            } while (line != null && !line.isEmpty());
+            }
 
             for (String card : curOrder) out.println(card);
             out.println();
