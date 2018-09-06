@@ -1,7 +1,7 @@
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class Main {
+public class StackEmUp {
     private static final Scanner in = new Scanner(System.in);
     private static final PrintStream out = System.out;
     private static final String[] cards = {
