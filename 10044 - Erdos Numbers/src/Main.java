@@ -34,6 +34,9 @@ class Main {
             }
 
             for (int i = 0; i < numRoots; i++) {
+                for(Node node : graph.values()) {
+                    node.reset();
+                }
                 String name = in.nextLine();
                 out.println(name + " " + bfs(graph.get(name), graph));
             }
@@ -48,11 +51,11 @@ class Main {
         while(!q.isEmpty()) {
             Node curNode = q.remove();
             if (curNode == null) return "infinity";
-            if (curNode.name.equals(goal)) return Integer.toString(curNode.getParent().getTreeSize());
+            if (curNode.name.equals(goal)) return Integer.toString(curNode.parents.size());
             for (String coauthor : curNode.associations) {
                 if (!visited.contains(coauthor)) {
                     visited.add(coauthor);
-                    q.add(G.get(coauthor).setParent(curNode));
+                    q.add(G.get(coauthor).addParents(curNode.addParent(curNode).parents));
                 }
             }
         }
@@ -63,23 +66,23 @@ class Main {
 
 class Node {
     String name;
-    private Node parent = null;
-    Node getParent() {
-        return this.parent;
-    }
-    Node setParent(Node value) {
-        this.parent = value;
+    Set<Node> parents = new HashSet<>();
+    Node addParent(Node value) {
+        this.parents.add(value);
         return this;
     }
-    Set<String> associations = new HashSet<>();
+    Node addParents(Set<Node> value) {
+        this.parents.addAll(value);
+        return this;
+    }
 
+    void reset() {
+        parents.clear();
+    }
+
+    Set<String> associations = new HashSet<>();
     Node(String name, List<String> associations) {
         this.name = name;
         this.associations.addAll(associations);
-    }
-
-    int getTreeSize() {
-        if (parent != null && !parent.name.equals(name)) return 1 + parent.getTreeSize();
-        else return 1;
     }
 }
