@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1132c7a9-6c8a-4813-924b-a0fc13d1f735" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/.idea/description.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/.idea/template-meta.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/10082 - WERTYU.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10082 - WERTYU/src/WERTYU.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StackEmUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StackEmUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StackEmUp.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,21 +54,22 @@
     <session id="1245302583">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="6811" />
+          <entry key="java" value="7383" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6811" />
+          <entry key="JAVA" value="7383" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -100,17 +107,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/StackEmUp.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -170,8 +167,9 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
-    <option name="width" value="975" />
-    <option name="height" value="1088" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -195,15 +193,15 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536253802292" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536284019977" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../10044 - Erdos Numbers" />
   </component>
   <component name="RunDashboard">
@@ -262,16 +260,17 @@
       <workItem from="1536185709528" duration="18877000" />
       <workItem from="1536243884165" duration="701000" />
       <workItem from="1536253344516" duration="473000" />
+      <workItem from="1536281195507" duration="2939000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23761000" />
+    <option name="totallyTimeSpent" value="26700000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12460064" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1256656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -326,8 +325,39 @@
     <entry file="file://$PROJECT_DIR$/src/Main2.java" />
     <entry file="file://$PROJECT_DIR$/src/StackEmUp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        <state relative-caret-position="262">
+          <caret line="94" column="52" lean-forward="true" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="52" />
+          <folding>
+            <element signature="e#1912#1947#1" expanded="true" />
+            <element signature="e#1863#1898#1" expanded="true" />
+            <element signature="e#1961#1989#1" expanded="true" />
+            <element signature="e#1987#3149#0" expanded="true" />
+            <element signature="e#2063#2076#1" expanded="true" />
+            <element signature="e#1987#3149#0" expanded="true" />
+            <element signature="e#1987#3149#0" expanded="true" />
+            <element signature="e#1987#3149#0" expanded="true" />
+            <element signature="e#1987#3149#0" expanded="true" />
+            <element signature="e#2200#2406#0" expanded="true" />
+            <element signature="e#2200#2406#0" expanded="true" />
+            <element signature="e#2200#2406#0" expanded="true" />
+            <element signature="e#2200#2406#0" expanded="true" />
+            <element signature="e#2200#2406#0" expanded="true" />
+            <element signature="e#2274#2392#0" expanded="true" />
+            <element signature="e#2274#2392#0" expanded="true" />
+            <element signature="e#2274#2392#0" expanded="true" />
+            <element signature="e#2274#2392#0" expanded="true" />
+            <element signature="e#2274#2392#0" expanded="true" />
+            <element signature="e#2478#2524#1" expanded="true" />
+            <element signature="e#2886#2971#0" expanded="true" />
+            <element signature="e#2886#2971#0" expanded="true" />
+            <element signature="e#2482#3026#0" expanded="true" />
+            <element signature="e#2833#2847#0" expanded="true" />
+            <element signature="e#2482#3026#0" expanded="true" />
+            <element signature="e#3040#3087#0" expanded="true" />
+            <element signature="e#3040#3087#0" expanded="true" />
+            <element signature="e#3100#3139#0" expanded="true" />
+            <element signature="e#3100#3139#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class StackEmUp {
@@ -65,16 +66,16 @@ public class StackEmUp {
 
         String[] newOrder = new String[52];
         String[] curOrder = new String[52];
-        System.arraycopy(cards, 0, curOrder, 0, 52);
 
         int numCases = in.nextInt();
 
         for (int test = 0; test < numCases; test++) {
+            System.arraycopy(cards, 0, curOrder, 0, 52);
             byte numShuffles = in.nextByte();
 
             shuffles = new byte[numShuffles][52];
 
-            for(int shuffle = 0; shuffle < numShuffles; shuffle++) {
+            for (int shuffle = 0; shuffle < numShuffles; shuffle++) {
                 for (int card = 0; card < 52; card++) {
                     shuffles[shuffle][card] = in.nextByte();
                 }
@@ -82,16 +83,22 @@ public class StackEmUp {
 
             in.nextLine();
 
-            while ((line = in.nextLine()) != null && !line.isEmpty()) {
+            line = in.nextLine();
+            do {
                 int shuffleIndex = Integer.parseInt(line) - 1;
                 for (int newPosIndex = 0; newPosIndex < 52; newPosIndex++) {
                     newOrder[newPosIndex] = curOrder[shuffles[shuffleIndex][newPosIndex] - 1];
                 }
                 System.arraycopy(newOrder, 0, curOrder, 0, 52);
-            }
+                try {
+                    line = in.nextLine();
+                } catch (NoSuchElementException ignored) {
+                    break;
+                }
+            } while (line != null && !line.isEmpty());
 
             for (String card : curOrder) out.println(card);
-            out.println();
+            if (test < numCases - 1) out.println();
         }
     }
 }
