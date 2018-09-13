@@ -57,8 +57,8 @@ class Tournament {
             }
             int teamBgoals = Integer.parseInt(tmp[0]);
 
-            assert b != null;
             assert a != null;
+            assert b != null;
             a.goalsScored += teamAgoals;
             b.goalsScored += teamBgoals;
             b.goalsAgainst += teamAgoals;
@@ -79,12 +79,6 @@ class Tournament {
                 b.highestGoalDifference = Math.max(a.highestGoalDifference, -1 * goalDifference);
             }
         }
-
-        sortTeams();
-    }
-
-    private void sortTeams() {
-
     }
 
     static class TeamComparator implements Comparator<Team> {
@@ -92,21 +86,28 @@ class Tournament {
         public int compare(Team a, Team b) {
             if (a.points() > b.points()) return 1;
             if (a.points() < b.points()) return -1;
+
             if (a.numWins > b.numWins) return 1;
             if (a.numWins < b.numWins) return -1;
+
             if (a.highestGoalDifference > b.highestGoalDifference) return 1;
             if (a.highestGoalDifference < b.highestGoalDifference) return -1;
+
             if (a.goalsScored > b.goalsScored) return 1;
             if (a.goalsScored < b.goalsScored) return -1;
+
             if (a.gamesPlayed() < b.gamesPlayed()) return 1;
             if (a.gamesPlayed() > b.gamesPlayed()) return -1;
+
             String aName = a.name.toLowerCase();
             String bName = b.name.toLowerCase();
+
             int length = Math.min(aName.length(), bName.length());
             for (int i = 0; i < length; i++) {
                 if (aName.charAt(i) < bName.charAt(i)) return 1;
                 if (aName.charAt(i) > bName.charAt(i)) return -1;
             }
+
             return Integer.compare(bName.length(), aName.length());
         }
     }
@@ -125,23 +126,36 @@ class Tournament {
         }
 
         int gamesPlayed() {
-            return numWins+numTies+numLoss;
+            return numWins + numTies + numLoss;
         }
 
         Team(String name) {
             this.name = name;
         }
+
+        public String toString() {
+            return String.format("%s %dp, %dg (%d-%d-%d), %dgd (%d-%d)",
+                    name,
+                    points(),
+                    gamesPlayed(),
+                    numWins,
+                    numTies,
+                    numLoss,
+                    highestGoalDifference,
+                    goalsScored,
+                    goalsAgainst
+            );
+        }
     }
 
     void print() {
         System.out.println(name);
-        int numTeams = teams.size();
-        for (int i = 1; i == numTeams; i++) {
+        int place = 0;
+        while(!teams.isEmpty()) {
+            place++;
             Team team = teams.pollFirst();
             assert team != null;
-            System.out.printf("%d) %s %dp, %dg (%d-%d-%d), %dgd (%d-%d)\n",
-                    i + 1, team.name, team.points(), team.gamesPlayed(), team.numWins, team.numTies,
-                    team.numLoss, team.highestGoalDifference, team.goalsScored, team.goalsAgainst);
+            System.out.println(Integer.toString(place) + ") " + team.toString());
         }
     }
 }
