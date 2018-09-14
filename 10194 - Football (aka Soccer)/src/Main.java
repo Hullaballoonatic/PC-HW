@@ -1,6 +1,5 @@
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.Scanner;
-import java.util.TreeSet;
 
 
 class Main {
@@ -10,116 +9,113 @@ class Main {
         int numTournaments = in.nextInt();
         in.nextLine();
 
-        while (numTournaments-- > 0) new Tournament(in).print();
+        while (numTournaments --> 0) new Tournament(in).print();
     }
 }
 
 class Tournament {
     private String name;
-    private TreeSet<Team> teams;
+    private Team[] teams;
 
     Tournament(Scanner in) {
         name = in.nextLine();
-        int numTeams = in.nextInt();
+        teams = new Team[in.nextInt()];
+
         in.nextLine();
 
-        teams = new TreeSet<>(new TeamComparator());
-
-        for (int i = 0; i < numTeams; i++)
-            teams.add(new Team(in.nextLine()));
+        for (int i = 0; i < teams.length; i++)
+            teams[i] = new Team(in.nextLine());
 
         int numMatches = in.nextInt();
         in.nextLine();
-        while (numMatches-- > 0) {
+        while (numMatches --> 0) {
+            /*
+                format
+                [teamAname]#[teamAgoals]@[teamBgoals]#[teamBname]
+            */
+            Team a = null;
+            Team b = null;
+            String teamAname;
+            String teamBname;
+            int teamAgoals;
+            int teamBgoals;
+
             String[] tmp = in.nextLine().split("@");
             String teamAstr = tmp[0];
             String teamBstr = tmp[1];
-
+            
+            //parse team A
             tmp = teamAstr.split("#");
-            String teamAname = tmp[0];
-            Team a = null;
+            teamAname = tmp[0];
+            teamAgoals = Integer.parseInt(tmp[1]);
+            
             for (Team team : teams) {
                 if (team.name.equals(teamAname)) {
                     a = team;
                     break;
                 }
             }
-            int teamAgoals = Integer.parseInt(tmp[1]);
 
+            //parse team B
             tmp = teamBstr.split("#");
-            String teamBname = tmp[1];
-            Team b = null;
+            teamBname = tmp[1];
+            teamBgoals = Integer.parseInt(tmp[0]);
+            
             for (Team team : teams) {
                 if (team.name.equals(teamBname)) {
                     b = team;
                     break;
                 }
             }
-            int teamBgoals = Integer.parseInt(tmp[0]);
-
+            
+            //add goal values
             assert a != null;
-            assert b != null;
             a.goalsScored += teamAgoals;
-            b.goalsScored += teamBgoals;
-            b.goalsAgainst += teamAgoals;
             a.goalsAgainst += teamBgoals;
 
-            int goalDifference = teamAgoals - teamBgoals;
+            assert b != null;
+            b.goalsScored += teamBgoals;
+            b.goalsAgainst += teamAgoals;
 
-            if (goalDifference == 0) {
+            //add wins/ties/losses
+            if (teamAgoals == teamBgoals) {
                 a.numTies++;
                 b.numTies++;
-            } else if (goalDifference > 0) {
+            } else if (teamAgoals > teamBgoals) {
                 a.numWins++;
                 b.numLoss++;
-                a.highestGoalDifference = Math.max(a.highestGoalDifference, goalDifference);
             } else {
                 a.numLoss++;
                 b.numWins++;
-                b.highestGoalDifference = Math.max(a.highestGoalDifference, -1 * goalDifference);
             }
         }
+
+        Arrays.sort(teams);
     }
 
-    static class TeamComparator implements Comparator<Team> {
-        @Override
-        public int compare(Team a, Team b) {
-            if (a.points() > b.points()) return 1;
-            if (a.points() < b.points()) return -1;
+    void print() {
+        System.out.println(name);
 
-            if (a.numWins > b.numWins) return 1;
-            if (a.numWins < b.numWins) return -1;
-
-            if (a.highestGoalDifference > b.highestGoalDifference) return 1;
-            if (a.highestGoalDifference < b.highestGoalDifference) return -1;
-
-            if (a.goalsScored > b.goalsScored) return 1;
-            if (a.goalsScored < b.goalsScored) return -1;
-
-            if (a.gamesPlayed() < b.gamesPlayed()) return 1;
-            if (a.gamesPlayed() > b.gamesPlayed()) return -1;
-
-            String aName = a.name.toLowerCase();
-            String bName = b.name.toLowerCase();
-
-            int length = Math.min(aName.length(), bName.length());
-            for (int i = 0; i < length; i++) {
-                if (aName.charAt(i) < bName.charAt(i)) return 1;
-                if (aName.charAt(i) > bName.charAt(i)) return -1;
-            }
-
-            return Integer.compare(bName.length(), aName.length());
+        for (int i = 0; i < teams.length; i++) {
+            Team team = teams[i];
+            System.out.printf("%d) %s\n", i, team.toString());
         }
+
+        System.out.println();
     }
 
-    class Team {
+    class Team implements Comparable<Team> {
+
+        Team(String name) {
+            this.name = name;
+        }
+
         String name;
         int numWins = 0;
         int numTies = 0;
         int numLoss = 0;
         int goalsScored = 0;
         int goalsAgainst = 0;
-        int highestGoalDifference;
 
         int points() {
             return 3 * numWins + numTies;
@@ -128,9 +124,9 @@ class Tournament {
         int gamesPlayed() {
             return numWins + numTies + numLoss;
         }
-
-        Team(String name) {
-            this.name = name;
+        
+        int goalDifference() {
+            return goalsScored - goalsAgainst;
         }
 
         public String toString() {
@@ -141,21 +137,30 @@ class Tournament {
                     numWins,
                     numTies,
                     numLoss,
-                    highestGoalDifference,
+                    goalDifference(),
                     goalsScored,
                     goalsAgainst
             );
         }
-    }
 
-    void print() {
-        System.out.println(name);
-        int place = 0;
-        while(!teams.isEmpty()) {
-            place++;
-            Team team = teams.pollFirst();
-            assert team != null;
-            System.out.println(Integer.toString(place) + ") " + team.toString());
+        @Override
+        public int compareTo(Team o) {
+            if (points() > o.points()) return 1;
+            if (points() < o.points()) return -1;
+
+            if (numWins > o.numWins) return 1;
+            if (numWins < o.numWins) return -1;
+
+            if (goalDifference() > o.goalDifference()) return 1;
+            if (goalDifference() < o.goalDifference()) return -1;
+
+            if (goalsScored > o.goalsScored) return 1;
+            if (goalsScored < o.goalsScored) return -1;
+
+            if (gamesPlayed() < o.gamesPlayed()) return -1;
+            if (gamesPlayed() > o.gamesPlayed()) return 1;
+
+            return name.compareToIgnoreCase(o.name);
         }
     }
 }
