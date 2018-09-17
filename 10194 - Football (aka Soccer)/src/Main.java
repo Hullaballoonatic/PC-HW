@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-
 class Main {
     private static Scanner in = new Scanner(System.in);
 
@@ -24,7 +23,7 @@ class Tournament {
         in.nextLine();
 
         for (int i = 0; i < teams.length; i++)
-            teams[i] = new Team(in.nextLine());
+            teams[i] = new Team(in.nextLine(), i);
 
         int numMatches = in.nextInt();
         in.nextLine();
@@ -67,26 +66,32 @@ class Tournament {
                     break;
                 }
             }
-            
+
             //add goal values
-            assert a != null;
-            a.goalsScored += teamAgoals;
-            a.goalsAgainst += teamBgoals;
-
-            assert b != null;
-            b.goalsScored += teamBgoals;
-            b.goalsAgainst += teamAgoals;
-
-            //add wins/ties/losses
-            if (teamAgoals == teamBgoals) {
-                a.numTies++;
-                b.numTies++;
-            } else if (teamAgoals > teamBgoals) {
+            if(a != null && b == null) {
                 a.numWins++;
-                b.numLoss++;
-            } else {
-                a.numLoss++;
+                a.goalsScored += teamAgoals;
+                a.goalsAgainst += teamBgoals;
+            } else if(a == null && b != null) {
                 b.numWins++;
+                b.goalsScored += teamBgoals;
+                b.goalsAgainst += teamAgoals;
+            } else {
+                assert a != null;
+                a.goalsScored += teamAgoals;
+                a.goalsAgainst += teamBgoals;
+                b.goalsScored += teamBgoals;
+                b.goalsAgainst += teamAgoals;
+                if (teamAgoals == teamBgoals) {
+                    a.numTies++;
+                    b.numTies++;
+                } else if (teamAgoals > teamBgoals) {
+                    a.numWins++;
+                    b.numLoss++;
+                } else {
+                    a.numLoss++;
+                    b.numWins++;
+                }
             }
         }
 
@@ -98,7 +103,7 @@ class Tournament {
 
         for (int i = 0; i < teams.length; i++) {
             Team team = teams[i];
-            System.out.printf("%d) %s\n", i, team.toString());
+            System.out.printf("%d) %s\n", i + 1, team.toString());
         }
 
         System.out.println();
@@ -106,10 +111,12 @@ class Tournament {
 
     class Team implements Comparable<Team> {
 
-        Team(String name) {
+        Team(String name, int i) {
             this.name = name;
+            this.i = i;
         }
 
+        int i;
         String name;
         int numWins = 0;
         int numTies = 0;
@@ -145,22 +152,25 @@ class Tournament {
 
         @Override
         public int compareTo(Team o) {
-            if (points() > o.points()) return 1;
-            if (points() < o.points()) return -1;
+            if (points() > o.points()) return -1;
+            if (points() < o.points()) return 1;
 
-            if (numWins > o.numWins) return 1;
-            if (numWins < o.numWins) return -1;
+            if (numWins > o.numWins) return -1;
+            if (numWins < o.numWins) return 1;
 
-            if (goalDifference() > o.goalDifference()) return 1;
-            if (goalDifference() < o.goalDifference()) return -1;
+            if (goalDifference() > o.goalDifference()) return -1;
+            if (goalDifference() < o.goalDifference()) return 1;
 
-            if (goalsScored > o.goalsScored) return 1;
-            if (goalsScored < o.goalsScored) return -1;
+            if (goalsScored > o.goalsScored) return -1;
+            if (goalsScored < o.goalsScored) return 1;
 
             if (gamesPlayed() < o.gamesPlayed()) return -1;
             if (gamesPlayed() > o.gamesPlayed()) return 1;
 
-            return name.compareToIgnoreCase(o.name);
+            if (name.compareToIgnoreCase(o.name) == -1) return -1;
+            if (name.compareToIgnoreCase(o.name) == 1) return 1;
+
+            return Integer.compare(i, o.i);
         }
     }
 }
