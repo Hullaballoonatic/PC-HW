@@ -10,7 +10,7 @@ class Main {
     public static void main(String[] args) {
         int numTestCases = in.nextInt();
 
-        while (numTestCases-- > 0) {
+        while (numTestCases-->0) {
             int lowestSum = Integer.MAX_VALUE;
 
             int[] streetNums = new int[in.nextInt()];
