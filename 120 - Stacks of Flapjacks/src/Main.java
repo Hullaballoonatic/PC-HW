@@ -1,36 +1,31 @@
-import javax.management.RuntimeErrorException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 class Main {
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
         String stack;
-        try {
-            while (!(stack = in.nextLine()).isEmpty()) {
-                ArrayList<Integer> nums = new ArrayList<>();
+        while (in.hasNextLine()) {
+            stack = in.nextLine();
+            ArrayList<Integer> nums = new ArrayList<>();
 
-                String[] tmp = stack.split(" ");
+            String[] tmp = stack.split(" ");
 
-                try {
-                    for (String n : tmp) nums.add(Integer.parseInt(n));
-                } catch (NumberFormatException ignored) {
-                }
-                System.out.println(stack);
-                printList(doFlips(nums));
-            }
-        } catch (RuntimeErrorException ignored) { System.exit(0); }
+            for (String n : tmp) nums.add(Integer.parseInt(n));
+
+            System.out.println(stack);
+            printList(doFlips(nums));
+        }
     }
 
-    private static void printList(List<Integer> li) {
+    private static void printList(ArrayList<Integer> li) {
         StringBuilder out = new StringBuilder();
         for (Integer f : li) out.append(f).append(" ");
         System.out.println(out.append(0));
     }
 
-    private static List<Integer> doFlips(List<Integer> li) {
+    private static ArrayList<Integer> doFlips(ArrayList<Integer> li) {
         ArrayList<Integer> result = new ArrayList<>();
         int size = li.size();
 
@@ -51,7 +46,7 @@ class Main {
         return result;
     }
 
-    private static List<Integer> flip(List<Integer> li, int f) {
+    private  static ArrayList<Integer> flip(ArrayList<Integer> li, int f) {
         ArrayList<Integer> result = new ArrayList<>();
         for (int i = f; i >= 0; i--) {
             result.add(li.get(i));
@@ -62,7 +57,7 @@ class Main {
         return result;
     }
 
-    private static int getMaxIndex(List<Integer> li, int cut) {
+    private static int getMaxIndex(ArrayList<Integer> li, int cut) {
         int max = 0;
         int max_i = -1;
         for (int i = 0; i < cut; i++)
