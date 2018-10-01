@@ -1,30 +1,35 @@
-import java.io.PrintStream;
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 
 class Main {
-    private static Scanner in = new Scanner(System.in);
-    private static PrintStream out = System.out;
+    private static final Scanner in = new Scanner(System.in);
+    private static final BigInteger TWO = new BigInteger("2"), MAX = new BigInteger("10").pow(100);
+    private static ArrayList<BigInteger> fibs = new ArrayList<BigInteger>() {{
+        add(ONE);
+        add(TWO);
+        int i = 2;
+        do {
+            add(get(i-1).add(get(i-2)));
+            i++;
+        } while(get(i-1).compareTo(MAX) <= 0);
+    }};
 
     public static void main(String[] args) {
         while(true) {
-            int a = in.nextInt(), b = in.nextInt(), fibs = 0;
-            if (a == 0 && b == 0) break;
+            BigInteger A = in.nextBigInteger(), B = in.nextBigInteger();
+            int a = 0, b = 0;
 
-            for(int n = a; n <= b; n++) {
-                if (isFib(n)) fibs++;
-            }
+            if (A.equals(ZERO) && B.equals(ZERO)) break;
 
-            out.println(fibs);
+            while(fibs.get(a).compareTo(A) < 0) a++;
+            b = a;
+            while(fibs.get(b).compareTo(B) <= 0) b++;
+
+            System.out.println(b-a);
         }
-    }
-
-    private static boolean isFib(int n) {
-        long foo = 5 * n * n;
-        return isSquare(foo + 4) || isSquare(foo - 4);
-    }
-
-    private static boolean isSquare(long n) {
-        int r = (int) Math.sqrt(n);
-        return r == n;
     }
 }
