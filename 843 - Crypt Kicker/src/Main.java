@@ -1,62 +1,82 @@
-import java.io.PrintStream;
 import java.util.*;
+
+import static java.lang.System.out;
 
 class Main {
     private static Scanner in = new Scanner(System.in);
-    private static PrintStream out = System.out;
     private static final char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    private static String[] unencryptedWords;
+    private static final Map<Integer, List<char[]>> dictionaryByLength = new HashMap<Integer, List<char[]>>() {{
+        int size = in.nextInt();
+        in.nextLine();
+        while(size-->0) {
+            String word = in.nextLine();
+            int length = word.length();
+            if(!containsKey(length)) put(length, new ArrayList<>());
+            get(length).add(word.toCharArray());
+        }
+    }};
+
+    private static int largestWord;
+
+    private static final Map<Integer, List<char[]>> uncheckedEncryptedWords = new HashMap<>();
+
+    private static String decrypt(String sentence, Map<Character, Character> cipher) {
+        for (char letter : alphabet)
+            sentence = sentence.replace(letter, cipher.get(letter));
+        return sentence;
+    }
+
+    private static final Map<Character, Character> IMPOSSIBLE_CIPHER = new HashMap<Character, Character>() {{
+        for (char letter : alphabet)
+            put(letter, '*');
+    }};
+
+    // recursive function
+    private static boolean decprypt(int length, Map<Character, Character> cipher) {
+        // create default cipher
+        if (cipher == null) cipher = new HashMap<Character, Character>() {{
+            for (char letter : alphabet) put(letter, null);
+        }};
+
+        List<char[]> possibleMatches = dictionaryByLength.get(length);
+
+        char[] curWord = uncheckedEncryptedWords.get(length).remove(0);
+
+        if(curWord == null && length == largestWord) return true;
+
+        for(char[] possibleMatch : possibleMatches) {
+            if (addMapping(curWord, possibleMatch, cipher)) {
+
+            }
+        }
+    }
+
+    private static boolean addMapping(char[] curWord, char[] possibleMatch, Map<Character, Character> cipher) {
+        Map<Character, Character> possibleChanges = new HashMap<>();
+        for(int i = 0; i < curWord.length; i++) {
+            if(cipher.get(possibleMatch[i]) == null && !possibleChanges.containsKey(possibleMatch[i]))
+                possibleChanges.put(possibleMatch[i], curWord[i]);
+
+            else if (cipher.get(possibleMatch[i]) != curWord[i]) return false;
+        }
+        if (dictionaryByLength.get(curWord.length).contains(decrypt(new String(curWord), possibleChanges).toCharArray()))
+            for (char letter : possibleChanges.keySet())
+                cipher.replace(letter, possibleChanges.get(letter));
+        return true;
+    }
 
     public static void main(String[] args) {
-        int numWords = Integer.parseInt(in.nextLine());
-        unencryptedWords = new String[numWords];
-        for (int i = 0; i < numWords; i++) {
-            unencryptedWords[i] = in.nextLine();
+        String encryptedSentence;
+        while((encryptedSentence = in.nextLine()) != null) {
+            String[] encryptedWords = encryptedSentence.split(" ");
+            for (String encryptedWord : encryptedWords) {
+                int length = encryptedWord.length();
+                if (length > largestWord) largestWord = length;
+                if (!uncheckedEncryptedWords.containsKey(length))
+                    uncheckedEncryptedWords.put(length, new ArrayList<>());
+                uncheckedEncryptedWords.get(length).add(encryptedWord.toCharArray());
+            }
+            out.println(decrypt(encryptedSentence, createCipher(0, null)));
         }
-
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            out.println(transform(line, deriveCipher(line)));
-        }
-    }
-
-    private static String transform(String unencrypted, Map<Character,Character> cipher) {
-        char[] result = unencrypted.toCharArray();
-
-        for (int i = 0; i < unencrypted.length(); i++) {
-            if (result[i] != ' ') result[i] = cipher.get(result[i]);
-        }
-
-        return Arrays.toString(result);
-    }
-
-    private static Map<Character, Character> createRandomCipher() {
-        Map<Character, Character> cipher = new HashMap<>();
-
-        for (char letter : alphabet) {
-            char candidate;
-            do {
-                candidate = alphabet[(int) (Math.random() * 26)];
-            } while (candidate == letter || cipher.containsValue(candidate));
-            cipher.put(letter, candidate);
-        }
-
-        return cipher;
-    }
-
-    private static Map<Character, Character> deriveCipher(String encryptedMessage) {
-
-        //bfs() {
-        LinkedList<String> q = new LinkedList<>();
-        ArrayList<Map<Character, Character>> checked = new ArrayList<>();
-
-        //
-    }
-
-    class Node {
-        String encryptedWord;
-        String[] children;
-
-
     }
 }
