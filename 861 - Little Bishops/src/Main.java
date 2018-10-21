@@ -1,5 +1,6 @@
 import java.util.*;
 
+import static java.lang.Math.max;
 import static java.lang.System.out;
 
 /**
@@ -11,71 +12,97 @@ import static java.lang.System.out;
  *
  * 1 <= n <= 8
  * 0 <= k <= n*n
+ *
+ */
+
+/*
+ * bishops in black squares can never attack those in white squares, so lets consider two boards
+ * then lets turn the diagonals to position up and down, then sort them by length. you'll always have
+ * one board where all lengths are odd, and the other where they are even
+ *
+ * example 5x5 board
+ *  XOXOX     X X X    O O
+ *  OXOXO      X X    O O O
+ *  XOXOX --> X X X +  O O
+ *  OXOXO      X X    O O O
+ *  XOXOX     X X X    O O
+ *
+ *              |       |
+ *              V       V
+ *
+ *            X
+ *            X       OO
+ *            XXX     OO
+ *            XXX     OOOO
+ *            XXXXX   OOOO
  */
 class Main {
     private static final Scanner in = new Scanner(System.in);
 
-    private static int n, k;
-
-    private static boolean hasNoViablePositions(boolean[] board) {
-        for (int i = 0; i < n*n; i++) if (!board[i]) return false;
-        return true;
-    }
-
-    private static int changePos(int pos, int r, int c) {
-        return pos + (r * n + c);
-    }
-
-    private static boolean[] placeBishop(boolean[] board, int pos) {
-        boolean[] result = board.clone();
-        for (int i = 0; i < n; i++)
-            try {
-                result[changePos(pos, -i, -i)] = true;
-            } catch (ArrayIndexOutOfBoundsException ignored) {
-            } finally {
-                try {
-                    result[changePos(pos, -i, +i)] = true;
-                } catch (ArrayIndexOutOfBoundsException ignored) {
-                } finally {
-                    try {
-                        result[changePos(pos, +i, -i)] = true;
-                    } catch (ArrayIndexOutOfBoundsException ignored) {
-                    } finally {
-                        try {
-                            result[changePos(pos, +i, +i)] = true;
-                        } catch (ArrayIndexOutOfBoundsException ignored) { }
-                    }
-                }
-            }
-        return result;
-    }
-
-    // position is index in our board if it was a single array with each row laid end to end. we can compute r and c from there
-    private static int backtrack(boolean[] board, int pos, int numPlaced) {
-        // We are counting by placing a single bishop every time
-        // If we have placed every bishop, we found one way!
-        if (numPlaced == k) return 1;
-        // If we have more bishops to place than there are possible positions to place them, there are no viable permutations from here
-        if (pos == n * n || hasNoViablePositions(board)) return 0;
-
-        // each board position can result in multiple successful placements
-        int result = 0;
-
-        if (!board[pos])
-            result += backtrack(placeBishop(board, pos), pos + 1,numPlaced+1);
-
-        // we also need to check how it turns out if we don't place a bishop here
-        result += backtrack(board, pos + 1, numPlaced);
-
-        return result;
-    }
-
     public static void main(String[] args) {
         while(true) {
-            n = in.nextInt();
-            k = in.nextInt();
-            if (n == 0 && k == 0) return;
-            else out.println(backtrack(new boolean[n*n], 0, 0));
+            Board.n = in.nextInt();
+            int k = in.nextInt();
+
+            if (Board.n == 0 && k == 0) return;
+            if (Board.n <= 1) out.println(1);
+            else {
+                int[] white = new White().possibilities;
+                int[] black = new Black().possibilities;
+
+                long result = 0;
+
+                for (int i = max(0, k - (black.length - 1)); i < white.length && i <= k; ++i)
+                    result += white[i] * black[k - i];
+
+                out.println(result);
+            }
         }
+    }
+}
+
+abstract class Board {
+    static int n;
+
+    abstract int colLength(int col);
+
+    abstract int numCols();
+
+    int[] possibilities;
+
+    Board() {
+        int[] colLengths = new int[numCols()];
+        for (int col = 0; col < colLengths.length; ++col)
+            colLengths[col] = colLength(col);
+
+        possibilities = new int[colLengths.length + 1];
+        possibilities[0] = 1;
+
+        for (int col = 0; col < colLengths.length; ++col) {
+            possibilities[col + 1] = 0;
+            for (int j = col; j >= 0; --j)
+                if (colLengths[col] > j)
+                    possibilities[j+1] += possibilities[j] * (colLengths[col] - j);
+        }
+    }
+}
+
+class White extends Board {
+    int colLength(int col) {
+        return col / 2 * 2 + 1;
+    }
+
+    int numCols() {
+        return n;
+    }
+}
+
+class Black extends Board {
+    int colLength(int col) {
+        return col / 2 * 2 + 2;
+    }
+
+    int numCols() {
+        return n - 1;
     }
 }
