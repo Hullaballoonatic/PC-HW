@@ -1,0 +1,4 @@
+C:\Users\Hulla\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "D:\Git\school\PC-HW\c\10054 - The Necklace"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Git/school/PC-HW/c/10054 - The Necklace/cmake-build-debug

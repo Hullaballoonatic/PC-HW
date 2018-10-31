@@ -1,0 +1,50 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Git/school/PC-HW/c/10054 - The Necklace/main.cpp
+vector
+-
+list
+-
+map
+-
+set
+-
+deque
+-
+stack
+-
+bitset
+-
+algorithm
+-
+functional
+-
+numeric
+-
+queue
+-
+utility
+-
+sstream
+-
+iostream
+-
+iomanip
+-
+cstdio
+-
+cmath
+-
+cstdlib
+-
+ctime
+-
+memory
+-
+

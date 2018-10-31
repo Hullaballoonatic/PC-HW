@@ -1,0 +1,3 @@
+D:/Git/school/PC-HW/c/10054 - The Necklace/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Git/school/PC-HW/c/10054 - The Necklace/cmake-build-debug/CMakeFiles/10054___The_Necklace.dir
+D:/Git/school/PC-HW/c/10054 - The Necklace/cmake-build-debug/CMakeFiles/rebuild_cache.dir

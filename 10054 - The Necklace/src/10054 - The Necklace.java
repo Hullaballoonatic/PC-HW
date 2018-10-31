@@ -1,68 +1,55 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
 
 import static java.lang.System.out;
 
 class Main {
-    private static final Scanner in = new Scanner(System.in);
+    private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private static final String trivialOutput = "some beads may be lost";
-    private static final int T = in.nextInt(), NUM_COLORS = 50;
-    private static int t = 0;
+    private static final int NUM_COLORS = 50;
     private static int[][] G = new int[NUM_COLORS][NUM_COLORS];
     private static int[] numBeadsPerColor = new int[NUM_COLORS];
-    private static ArrayList<Integer> necklace = new ArrayList<>();
+    private static int[] path = new int[1001];
+    private static int it = 0;
 
-    private static boolean isOdd(int num) {
-        return num % 2 == 1;
+    private static void createPath(int cur) {
+        for (int nxt = 0; nxt < NUM_COLORS; nxt++) {
+            if (G[cur][nxt] > 0) {
+                G[cur][nxt]--;
+                G[nxt][cur]--;
+                createPath(nxt);
+            }
+        }
+
+        path[it] = cur + 1;
+        it++;
     }
 
-    private static boolean parseTest() {
-        int n = in.nextInt();
-        for (int i = 0; i < NUM_COLORS; i++) {
-            numBeadsPerColor[i] = 0;
-            for (int j = 0; j < NUM_COLORS; j++)
-                G[i][j] = 0;
-        }
-        for (int i = 0; i < n; i++) {
-            int a = in.nextInt() - 1, b = in.nextInt() - 1;
+    private static boolean input() throws IOException {
+        int N = Integer.valueOf(in.readLine());
+        for (int n = 0; n < N; n++) {
+            String tmp[] = in.readLine().split(" ");
+            int a = Integer.valueOf(tmp[0]) - 1, b = Integer.parseInt(tmp[1]) - 1;
             G[a][b]++;
             G[b][a]++;
             numBeadsPerColor[a]++;
             numBeadsPerColor[b]++;
         }
-        for (int numBeads : numBeadsPerColor)
-            if (isOdd(numBeads))
-                return false;
+        for (int numBeads : numBeadsPerColor) if (numBeads % 2 == 1) return false;
 
         return true;
     }
 
-    private static void path(int pre) {
-        for (int cur = 0; cur < NUM_COLORS; cur++)
-            if (G[pre][cur] > 0) {
-                G[pre][cur]--;
-                G[cur][pre]--;
-                path(cur);
-            }
-        necklace.add(pre + 1);
-    }
-
-    public static void main(String ... args) {
-        while(++t<=T) {
+    public static void main(String[] args) throws IOException {
+        //PrintStream out = new PrintStream(new File("src\\out.txt"));
+        for (int t = 1, T = Integer.valueOf(in.readLine()); t <= T; t++) {
             out.printf("%sCase #%d\n", t > 1 ? "\n" : "", t);
-
-            if(!parseTest())
-                out.println(trivialOutput);
-            else {
-                path(0);
-
-                for (int pre = 0, cur = 1; cur < necklace.size(); pre++, cur++)
-                    out.printf("%d %d\n", necklace.get(pre), necklace.get(cur));
-
-                necklace.clear();
-            }
+            if (input()) {
+                it = 0;
+                createPath(0);
+                for (int cur = 0, nxt = 1; nxt < it; cur++, nxt++)
+                    out.printf("%d %d\n", path[cur], path[nxt]);
+            } else out.println(trivialOutput);
         }
-
         in.close();
     }
 }
