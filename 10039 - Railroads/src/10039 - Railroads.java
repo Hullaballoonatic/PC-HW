@@ -13,6 +13,10 @@ class Main {
     private static Map<String, Map<String, List<Integer>>> connections;
     private static final String failOutput = "No connection";
 
+    private static int bfs(int start, int goal) {
+
+    }
+
     private static void input() {
         cities = new String[in.nextInt()];
         in.nextLine();
