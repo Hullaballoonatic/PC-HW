@@ -36,30 +36,32 @@ class Main {
         while ((n = in.nextInt()) != 0) {
             in.nextLine();
 
-            String[] name = new String[n];
             G = new boolean[n][n];
-            HashMap<String,Integer> map = new HashMap<>();
-
-            for (int i = 0; i < n; i++) {
-                name[i]=in.nextLine();
-                map.put(name[i], i);
-            }
+            Set<String> cities = new TreeSet<String>() {{
+                for (int i = 0; i < n; i++)
+            }};
+            for (int i = 0; i < n; i++)
+                cities[i] = in.nextLine();
 
             for (int i = 0, r = Integer.parseInt(in.nextLine()); i < r; i++) {
-                String[] city = in.nextLine().split(" ");
-                int a = map.getOrDefault(city[0],-1);
-                int b = map.getOrDefault(city[1],-1);
+                String[] tmp = in.nextLine().split(" ");
+                int a = cities;
+                int b = map.getOrDefault(tmp[1],-1);
                 if (a != b && a >= 0 && a < n && b >= 0 && b < n) {
                     G[a][b]=true;
                     G[b][a]=true;
                 }
             }
 
-            String[] camera = new String [n];
+            Set<String> cameras = new TreeSet<String>(Comparator.naturalOrder()) {{
+               for (int i = 0, start = bfs(-1); i < n; i++)
+                   if (bfs(i) > start)
+                       add(cities);
+            }};
             int count = 0;
             for (int i = 0, start = bfs(-1); i < n; i++)
                 if (bfs(i)>start)
-                    camera[count++] = name[i];
+                    camera[count++] = ;
 
             Arrays.sort(camera, 0, count);
 
