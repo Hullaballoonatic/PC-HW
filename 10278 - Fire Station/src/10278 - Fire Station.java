@@ -1,122 +1,58 @@
 import java.util.*;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.lang.System.out;
 
-class Main {
+class Main{
     private static final Scanner in = new Scanner(System.in);
-    private static final int infinity = Integer.MAX_VALUE;
-    private static int T = in.nextInt(), f, n;
-    private static int[] distances;
-    private static LinkedList<Edge>[] E;
+    private static int T = in.nextInt();
+    private static int f;
+    private static final int INFINITY = Integer.MAX_VALUE;
 
-    private static String postfix() {
-        return T > 0 ? "\n\n" : "\n";
-    }
+    public static void main(String... args) {
+        while(T-->0) {
+            f = in.nextInt();
+            int n = in.nextInt();
 
-    @SuppressWarnings("unchecked")
-    private static void parseInput() {
-        f = in.nextInt();
-        n = in.nextInt();
-        distances = new int[n + 1];
-        E = new LinkedList[n + 1];
+            Set<Integer> fireStations = new HashSet<Integer>() {{
+                while(f-->0) add(in.nextInt());
+            }};
 
-        for (int i = 1; i <= n; i++)
-            E[i] = new LinkedList<>();
+            int[][] G = new int[n][n];
 
-        for (int i = 1; i <= n; i++)
-            distances[i] = i;
+            for (int[] row : G)
+                Arrays.fill(row, INFINITY);
 
-        for (int i = 1; i <= f; i++)
-            distances[in.nextInt()] = 0;
-
-        in.nextLine();
-
-        while (in.hasNext()) {
-            try {
-                String[] edge = in.nextLine().split(" ");
-
-                int a = Integer.parseInt(edge[0]);
-                int b = Integer.parseInt(edge[1]);
-                int weight = Integer.parseInt(edge[2]);
-
-                E[a].add(new Edge(b, weight));
-                E[b].add(new Edge(a, weight));
-            } catch (NumberFormatException e) {
-                break;
+            for (int it = 1; it < G.length; it++) {
+                int a = in.nextInt() - 1, b = in.nextInt() - 1, w = in.nextInt();
+                G[a][b] = G[b][a] = w;
+                G[a][a] = G[b][b] = 0;
             }
-        }
-    }
 
-    // returns the longest path to a fire station.
-    // meaning there is no "goal"
-    private static int dijkstra(int startNum, int[] G) {
-        HashSet<Node> visited = new HashSet<>();
-        PriorityQueue<Node> Q = new PriorityQueue<Node>(Comparator.comparingInt(o -> o.weight)) {{
-            for (int i = 1; i < n; i++)
-                if (distances[i] == 0)
-                    add(new Node(distances[i], 0));
-            add(new Node(startNum, 0));
-        }};
+            for (int a = 0; a < n; a++)
+                for (int b = 0; b < n; b++)
+                    for (int c = 0; c < n; c++)
+                        G[b][c] = min(G[b][c], G[b][a] + G[a][c]);
 
-        Node cur;
+            int[] dist = new int[n];
+            Arrays.fill(dist, INFINITY);
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if(fireStations.contains(j))
+                        dist[i] = min(dist[i], G[i][j]);
 
-        // every vertex weight will be set to its shortest path
-        while (!Q.isEmpty())
-            if (visited.add(cur = Q.poll()) && E[cur.intersection] != null)
-                for (Edge e : E[cur.intersection]) {
-                    if (cur.weight + e.weight < G[e.to]) {
-                        G[e.to] = cur.weight + e.weight;
-                        Q.add(new Node(e.to, G[e.to]));
-                    }
-                }
-
-        // get longest route to a fire station
-        int max = G[1];
-        for (int i = 2; i <= n; i++)
-            max = max(max, G[i]);
-
-        return max;
-    }
-
-    // run dijkstra on every possible position to place the new fireStation
-    private static int solve() {
-        int best = 0;
-        int bestWeight = infinity;
-        for (int intersection = 1; intersection <= n; intersection++)
-            if (distances[intersection] != 0) {
-                int weight = dijkstra(intersection, distances.clone());
-                if (best == 0 || weight < bestWeight) {
-                    best = intersection;
-                    bestWeight = weight;
+            int ind = 0, max = INFINITY;
+            for (int i = 0; i < n; i++) {
+                int cur = 0;
+                for (int j = 0; j < n; j++)
+                    cur = max(cur, min(dist[j], G[i][j]));
+                if(cur < max) {
+                    max = cur;
+                    ind = i+1;
                 }
             }
-        return best;
-    }
-
-    public static void main(String[] args) {
-        while (T-- > 0) {
-            parseInput();
-            out.printf("%d%s", f == n ? 1 : solve(), postfix());
+            out.printf("%d\n%s", ind, T > 0 ? "\n" : "");
         }
-    }
-}
-
-class Edge {
-    int to;
-    int weight;
-
-    Edge(int to, int weight) {
-        this.to = to;
-        this.weight = weight;
-    }
-}
-
-class Node {
-    int intersection;
-    int weight;
-    Node(int intersection, int weight) {
-        this.intersection = intersection;
-        this.weight = weight;
     }
 }
