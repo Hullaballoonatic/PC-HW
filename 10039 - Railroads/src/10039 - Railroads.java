@@ -1,89 +1,90 @@
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+import static java.lang.Math.max;
 import static java.lang.System.out;
 
-@SuppressWarnings("unchecked")
-class Main {
-    private static final Scanner in = new Scanner(System.in);
-    private static final int numScenarios = in.nextInt();
-    private static String[] cities;
-    private static String goal;
-    private static int curScenario = 0;
-    private static List<Node> journey = new ArrayList<>();
-    private static Map<String, Map<String, List<Integer>>> connections;
-    private static final String failOutput = "No connection";
+class Connection {
+    Stop from, to;
 
-    private static void input() {
-        cities = new String[in.nextInt()];
-        in.nextLine();
-        for (int i = 0; i < cities.length; i++)
-            cities[i] = in.nextLine();
-
-        connections = new HashMap<>();
-        for (String city : cities) {
-            if (!connections.keySet().contains(city)) connections.put(city, new HashMap<>());
-            
-        }
-
-        journey.clear();
-        journey.add(new Node(Integer.parseInt(in.nextLine()), in.nextLine()));
-        goal = in.nextLine();
-    }
-
-    private static void output() {
-        out.printf("Scenario %d\n", curScenario);
-
-        out.println();
-    }
-
-    public static void main(String ... args) {
-	    while (++curScenario<=numScenarios) {
-	        input();
-	        output();
-        }
+    Connection(Stop from, Stop to) {
+        this.from = from;
+        this.to = to;
     }
 }
 
-class Line {
-    List<Integer> fromStops, toStops;
-}
-
-class Node {
+class Stop {
     int time;
     String city;
 
-    Node(int time, String city) {
+    Stop(int time, String city) {
         this.time = time;
-        this.city = city;
+        this.city = city.trim();
     }
 }
 
-class Train {
-    int numStops;
-    String[] cities;
-    int[] times;
+class Main {
+    private static final Scanner in = new Scanner(System.in);
+    private static final String trivialSolutionString = "No connection\n";
+    private static int latestFinish;
 
-    Train(int numStops, Scanner in) {
-        in.nextLine();
+    public static void main(String[] args){
+        for (int scenario = 1, numScenarios = in.nextInt(); scenario <= numScenarios; scenario++) {
+            out.printf("Scenario %d\n", scenario);
 
-        this.numStops = numStops;
+            List<String> cities = new ArrayList<String>() {{
+                for (int i = 0, numCities = parseInt(in.nextLine()); i < numCities; i++)
+                    add(in.nextLine());
+            }};
 
-        cities = new String[numStops];
-        times = new int[numStops];
+            latestFinish = 0;
+            List<Connection> connections = new ArrayList<Connection>() {{
+                for (int numTrains = in.nextInt(); numTrains > 0; numTrains--) {
+                    for(int numStops = in.nextInt(); numStops > 0; numStops--) {
+                        Stop from = new Stop(in.nextInt(), in.nextLine());
+                        while(numStops-->0) {
+                            Stop to = new Stop(in.nextInt(), in.nextLine());
+                            add(new Connection(from, to));
+                            latestFinish = max(latestFinish, to.time);
+                            from = to;
+                        }
+                    }
+                }
+            }};
 
-        for (int i = 0; i < numStops; i++) {
-            String[] tmp = in.nextLine().split(" ");
-            times[i] = Integer.parseInt(tmp[0]);
-            cities[i] = tmp[2];
+            int earliestStart = parseInt(in.nextLine());
+            String start = in.nextLine(), destination = in.nextLine();
+
+            // adjacency list
+            Map<String, Map<Integer, Integer>> fastestTime = new HashMap<String, Map<Integer, Integer>>() {{
+                for (String city : cities) put(city, new HashMap<>());
+                for (Connection connection : connections) {
+                    if (!get(connection.from).containsKey(connection.to.time))
+                        get(connection.from).put(connection.to.time, -1);
+                    if (!get(connection.from).containsKey(connection.from.time))
+                        get(connection.from).put(connection.from.time, -1);
+
+                    if (connection.from.city.equals(start) && connection.from.time >= earliestStart)
+                        for (int time = connection.to.time - 1; time < latestFinish; time++)
+                            if (get(connection.to).containsKey(time)) get(connection.to).replace(time, max(get(connection.to).get(time), connection.from.time));
+                            else get(connection.to).put(time, connection.from.time);
+                    else if (get(connection.from).get(connection.from.time) >= 0) {
+                        for (int time = connection.to.time - 1; time < latestFinish; time++)
+                            if (get(connection.to).containsKey(time)) get(connection.to).replace(time, max(get(connection.to).get(time), connection.from.time));
+                            else get(connection.to).put(time, connection.from.time);
+                    }
+                }
+            }};
+
+            String solution = trivialSolutionString;
+
+            for (int time = 0; time < latestFinish; time++)
+                if (fastestTime.get(destination).get(time) >= 0) {
+                    solution = String.format("Departure %04d %s\nArrival   %04d %s\n", fastestTime.get(destination).get(time), start, time + 1, destination);
+                    break;
+                }
+
+            out.println(solution);
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Train\n");
-        for (int i = 0; i < numStops; i++) {
-            sb.append(String.format("%d %s\n", times[i], cities[i]));
-        }
-        return sb.append("\n").toString();
     }
 }

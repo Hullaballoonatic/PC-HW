@@ -4,55 +4,95 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.System.out;
 
-class Main{
+class Edge {
+    int to;
+    int weight;
+
+    Edge(int to, int weight) {
+        this.to = to;
+        this.weight = weight;
+    }
+}
+
+class Main {
     private static final Scanner in = new Scanner(System.in);
     private static int T = in.nextInt();
-    private static int f;
-    private static final int INFINITY = Integer.MAX_VALUE;
+    private static final int oo = (int) 1e24;
+    private static LinkedList<Edge>[] G;
+    private static final Set<Integer> fireStations = new HashSet<>();
+    private static int[] intersections;
 
+    private static int dijkstra(int start) {
+        int[] distances = new int[intersections.length + 1];
+        Arrays.fill(distances, oo);
+        for (int fireStation : fireStations)
+            distances[fireStation] = 0;
+        distances[start] = 0;
+
+        PriorityQueue<Integer> q = new PriorityQueue<Integer>(Comparator.comparingInt(a -> distances[a])) {{
+            for (int intersection : intersections)
+                add(intersection);
+        }};
+
+        Integer cur;
+
+        while((cur = q.poll()) != null) {
+            if (fireStations.contains(cur))
+                return distances[cur];
+            for (Edge e : G[cur])
+                if (fireStations.contains(e.to)) {
+                    return distances[cur] + e.weight;
+                } else distances[e.to] = min(distances[e.to], distances[cur] + e.weight);
+        }
+
+        throw(new NullPointerException());
+    }
+
+    @SuppressWarnings("unchecked")
     public static void main(String... args) {
         while(T-->0) {
-            f = in.nextInt();
-            int n = in.nextInt();
+            int bestPlacement = 1, bestFurthest = oo;
+            int numFireStations = in.nextInt(), numIntersections = in.nextInt();
 
-            Set<Integer> fireStations = new HashSet<Integer>() {{
-                while(f-->0) add(in.nextInt());
-            }};
+            intersections = new int[numIntersections];
+            for (int num = 0; num < intersections.length; num++)
+                intersections[num] = num + 1;
 
-            int[][] G = new int[n][n];
+            fireStations.clear();
+            for(int it = 0; it < numFireStations; it++)
+                fireStations.add(in.nextInt());
 
-            for (int[] row : G)
-                Arrays.fill(row, INFINITY);
-
-            for (int it = 1; it < G.length; it++) {
-                int a = in.nextInt() - 1, b = in.nextInt() - 1, w = in.nextInt();
-                G[a][b] = G[b][a] = w;
-                G[a][a] = G[b][b] = 0;
-            }
-
-            for (int a = 0; a < n; a++)
-                for (int b = 0; b < n; b++)
-                    for (int c = 0; c < n; c++)
-                        G[b][c] = min(G[b][c], G[b][a] + G[a][c]);
-
-            int[] dist = new int[n];
-            Arrays.fill(dist, INFINITY);
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    if(fireStations.contains(j))
-                        dist[i] = min(dist[i], G[i][j]);
-
-            int ind = 0, max = INFINITY;
-            for (int i = 0; i < n; i++) {
-                int cur = 0;
-                for (int j = 0; j < n; j++)
-                    cur = max(cur, min(dist[j], G[i][j]));
-                if(cur < max) {
-                    max = cur;
-                    ind = i+1;
+            if (numFireStations != numIntersections) {
+                G = new LinkedList[numIntersections + 1];
+                for (int ignored : intersections) {
+                    int a = in.nextInt(), b = in.nextInt(), w = in.nextInt();
+                    if (G[a] == null) G[a] = new LinkedList<>();
+                    if (G[b] == null) G[b] = new LinkedList<>();
+                    G[a].add(new Edge(b, w));
+                    G[b].add(new Edge(a, w));
                 }
+
+                out.println(" fire station | intersection |   distance   \n" +
+                            "--------------+--------------+--------------");
+                for (int newFireStation : intersections)
+                    if (fireStations.add(newFireStation)) {
+                        int curFurthest = -1;
+
+                        for (int intersection : intersections) {
+                            int distance = dijkstra(intersection);
+                            out.printf("            %d |            %d | %d\n", newFireStation, intersection, distance);
+                            curFurthest = max(curFurthest, distance);
+                        }
+                        if (curFurthest < bestFurthest) {
+                            bestFurthest = curFurthest;
+                            bestPlacement = newFireStation;
+                        }
+
+                        fireStations.remove(newFireStation);
+                    }
             }
-            out.printf("%d\n%s", ind, T > 0 ? "\n" : "");
+
+            out.printf("%d\n%s", bestPlacement, T > 0 ? "\n" : "");
         }
     }
 }

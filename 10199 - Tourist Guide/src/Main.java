@@ -1,29 +1,32 @@
-import java.util.*;
-
-import static java.lang.System.out;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
 
 class Main {
     private static final Scanner in = new Scanner(System.in);
-    private static boolean[][] G;
 
-    private static void fill(int i) {
-        if (!visited[i]) {
-            visited[i] = true;
-            for (int j = 0; j < G.length; j++) {
-                if (G[i][j]) {
-                    fill(j);
+    private static boolean[][] mat;
+    private static boolean[] visited;
+
+    private static void fill(int id) {
+        if (!visited[id]) {
+            visited[id] = true;
+            for (int i = 0; i < mat.length; i++) {
+                if (mat[id][i]) {
+                    fill(i);
                 }
             }
         }
     }
 
-    private static int bfs(int start) {
-        Set<Integer> v = new HashSet<Integer>() {{
-            add(start);
-        }};
+    private static int computeCC(int disabled) {
+        Arrays.fill(visited, false);
+        if (disabled != -1) {
+            visited[disabled] = true;
+        }
         int count = 0;
-        for (int i = 0; i < G.length; i++) {
-            if (!v.add(i)) {
+        for (int i = 0; i < mat.length; i++) {
+            if (!visited[i]) {
                 fill(i);
                 count++;
             }
@@ -31,42 +34,58 @@ class Main {
         return count;
     }
 
-    public static void main(String ... args) {
-        int t = 1, n;
-        while ((n = in.nextInt()) != 0) {
-            in.nextLine();
+    public static void main(String... args) {
+        int t = 1;
+        while (true) {
+            int N = Integer.parseInt(in.nextLine());
+            if (N == 0) {
+                break;
+            }
+            String[] name = new String[N];
+            HashMap<String, Integer> map = new HashMap<>();
+            for (int i = 0; i < N; i++) {
+                name[i] = in.nextLine();
+                map.put(name[i], i);
+            }
 
-            G = new boolean[n][n];
-            Set<String> cities = new TreeSet<String>() {{
-                for (int i = 0; i < n; i++)
-            }};
-            for (int i = 0; i < n; i++)
-                cities[i] = in.nextLine();
-
-            for (int i = 0, r = Integer.parseInt(in.nextLine()); i < r; i++) {
-                String[] tmp = in.nextLine().split(" ");
-                int a = cities;
-                int b = map.getOrDefault(tmp[1],-1);
-                if (a != b && a >= 0 && a < n && b >= 0 && b < n) {
-                    G[a][b]=true;
-                    G[b][a]=true;
+            mat = new boolean[N][N];
+            int R = Integer.parseInt(in.nextLine());
+            for (int i = 0; i < R; i++) {
+                String[] city = in.nextLine().split(" ");
+                int id0 = map.getOrDefault(city[0], -1);
+                int id1 = map.getOrDefault(city[1], -1);
+                if (id0 != id1 && id0 >= 0 && id0 < N && id1 >= 0 && id1 < N) {
+                    mat[id0][id1] = true;
+                    mat[id1][id0] = true;
                 }
             }
 
-            Set<String> cameras = new TreeSet<String>(Comparator.naturalOrder()) {{
-               for (int i = 0, start = bfs(-1); i < n; i++)
-                   if (bfs(i) > start)
-                       add(cities);
-            }};
-            int count = 0;
-            for (int i = 0, start = bfs(-1); i < n; i++)
-                if (bfs(i)>start)
-                    camera[count++] = ;
+            visited = new boolean[N];
+            int initCC = computeCC(-1);
+            String[] camera = new String[N];
+            int cameraCount = 0;
+            for (int i = 0; i < visited.length; i++) {
+                int currCC = computeCC(i);
+                if (currCC > initCC) {
+                    camera[cameraCount++] = name[i];
+                }
+            }
+            Arrays.sort(camera, 0, cameraCount);
 
-            Arrays.sort(camera, 0, count);
-
-            out.printf("%sCity map #%d: %d camera(s) found\n", t > 1 ? "\n" : "", t++, count);
-            for (String cam : camera) out.println(cam);
+            if (t > 1) {
+                System.out.println();
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append("City map #");
+            sb.append(t++);
+            sb.append(": ");
+            sb.append(cameraCount);
+            sb.append(" camera(s) found\n");
+            for (int i = 0; i < cameraCount; i++) {
+                sb.append(camera[i]);
+                sb.append('\n');
+            }
+            System.out.print(sb.toString());
         }
     }
 }
